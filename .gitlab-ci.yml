@@ -1,0 +1,135 @@
+default:
+  image: ghcr.io/jbowdre/packer-xorriso:latest
+
+stages:
+  - build
+  - deploy
+
+build_ws2019:
+  stage: build
+  rules:
+    - if: $BUILD == "ws2019"
+  script:
+    - echo "Windows Server 2019 Packer build underway..."
+    - packer init builds/windows/server/2019/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-win.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/windows/server/2019/"
+
+build_ws2022:
+  stage: build
+  rules:
+    - if: $BUILD == "ws2022"
+  script:
+    - echo "Windows Server 2022 Packer build underway..."
+    - packer init builds/windows/server/2022/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-win.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/windows/server/2022/"
+
+build_ubuntu2004:
+  stage: build
+  rules:
+    - if: $BUILD == "ubuntu2004"
+  script:
+    - echo "Ubuntu 20.04 Packer build underway..."
+    - packer init builds/linux/ubuntu/20-04-lts/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/ubuntu/20-04-lts/"
+
+build_rocky9:
+  stage: build
+  rules:
+    - if: $BUILD == "rocky9"
+  script:
+    - echo "Rocky 9 Packer build underway..."
+    - packer init builds/linux/rocky/9/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/rocky/9/"
+
+build_rhel9:
+  stage: build
+  rules:
+    - if: $BUILD == "rhel9"
+  script:
+    - echo "Red Hat Enterprise Linux 9 Packer build underway..."
+    - packer init builds/linux/rhel/9/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/rhsm.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/rhel/9/"
+
+build_rhel8:
+  stage: build
+  rules:
+    - if: $BUILD == "rhel8"
+  script:
+    - echo "Red Hat Enterprise Linux 8 Packer build underway..."
+    - packer init builds/linux/rhel/8/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/rhsm.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/rhel/8/"
+
+build_rhel7:
+  stage: build
+  rules:
+    - if: $BUILD == "rhel7"
+  script:
+    - echo "Red Hat Enterprise Linux 7 Packer build underway..."
+    - packer init builds/linux/rhel/7/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/rhsm.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/rhel/7/"
+
+build_photon4:
+  stage: build
+  rules:
+    - if: $BUILD == "photon4"
+  script:
+    - echo "VMware Photon OS 4 Packer build underway..."
+    - packer init builds/linux/photon/4/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/photon/4/"
+
+build_bsp:
+  stage: build
+  rules:
+    - if: $BUILD == "bsp"
+  script:
+    - echo "Bowdre Sync Platform appliance build underway..."
+    - packer init builds/linux/photon/bsp/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/photon/bsp/"
