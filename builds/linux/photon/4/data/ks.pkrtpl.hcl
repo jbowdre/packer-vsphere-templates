@@ -62,7 +62,6 @@
         "minimal",
         "openssl-c_rehash",
         "parted",
-        "salt3-minion",
         "sudo",
         "vim"
     ],
