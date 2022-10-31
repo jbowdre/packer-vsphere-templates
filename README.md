@@ -14,6 +14,7 @@ Packer Templates
 - [Ubuntu Server 20.04 LTS](builds/linux/ubuntu/20-04-lts/)
 - [VMware Photon OS 4](builds/linux/photon/4/)
 - [Library syncer appliance](builds/linux/photon/bsp/)
+- [Kubernetes Node (Ubuntu 20.04)](/builds/linux/ubuntu/20-04-kubes/)
 
 To run a build locally (not via GitLab CI), just copy/paste the corresponding `packer build` line from [.gitlab-ci.yml](.gitlab-ci.yml). For example, to run a Windows Server 2022 build:
 ```shell
