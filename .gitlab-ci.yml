@@ -133,3 +133,17 @@ build_bsp:
       -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/photon/bsp/"
+
+build_kube-u2004:
+  stage: build
+  rules:
+    - if: $BUILD == "kube-u2004"
+  script:
+    - echo "Kubernetes Ubuntu 20.04 node template build underway..."
+    - packer init builds/linux/ubuntu/20-04-kubes/
+    - | 
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
+      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/ubuntu/20-04-kubes/"
