@@ -25,7 +25,7 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_url             = null
-iso_path            = ""
+iso_path            = "_ISO"
 iso_file            = "photon-4.0-c001795b8.iso"
 iso_checksum_type   = "md5"
 iso_checksum_value  = "5af288017d0d1198dd6bd02ad40120eb"

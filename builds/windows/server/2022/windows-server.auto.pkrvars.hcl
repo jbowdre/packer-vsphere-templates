@@ -37,7 +37,7 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_url             = null
-iso_path            = ""
+iso_path            = "_ISO"
 iso_file            = "SERVER_2022.iso"
 iso_checksum_type   = "sha256"
 iso_checksum_value  = "5F3A9413397FB1EB2406012B601625F2FD6B35B51E51A0F52CFB73BDCDA7B88C"

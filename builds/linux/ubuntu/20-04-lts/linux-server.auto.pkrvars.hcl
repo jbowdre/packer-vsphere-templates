@@ -28,7 +28,7 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_url             = null
-iso_path            = ""
+iso_path            = "_ISO"
 iso_file            = "ubuntu-20.04.5-live-server-amd64.iso"
 iso_checksum_type   = "sha256"
 iso_checksum_value  = "5035be37a7e9abbdc09f0d257f3e33416c1a0fb322ba860d42d74aa75c3468d4"

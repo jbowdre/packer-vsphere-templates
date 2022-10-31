@@ -28,7 +28,7 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_url             = null
-iso_path            = ""
+iso_path            = "_ISO"
 iso_file            = "rhel-8.6-x86_64-dvd.iso"
 iso_checksum_type   = "sha256"
 iso_checksum_value  = "8cb0dfacc94b789933253d5583a2fb7afce26d38d75be7c204975fe20b7bdf71"

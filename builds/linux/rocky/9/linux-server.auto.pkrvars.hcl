@@ -28,7 +28,7 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_url             = null
-iso_path            = ""
+iso_path            = "_ISO"
 iso_file            = "Rocky-9.0-20220805.0-x86_64-minimal.iso"
 iso_checksum_type   = "sha256"
 iso_checksum_value  = "b16bc85f4fd14facf3174cd0cf8434ee048d81e5470292f3e1cfff47af2463b7"
