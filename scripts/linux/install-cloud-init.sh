@@ -1,5 +1,5 @@
 #!/bin/bash -eu
-if [[ $(which dnf) ]]; then
+if which dnf &>/dev/null; then
   echo '>> Installing cloud-init...'
   sudo dnf -y install cloud-init
 else

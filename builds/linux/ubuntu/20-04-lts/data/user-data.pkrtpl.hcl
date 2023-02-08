@@ -75,7 +75,7 @@ autoinstall:
         id: lvm_volgroup-0
       - name: home
         volgroup: lvm_volgroup-0
-        size: 4096M
+        size: 8192M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-home
@@ -86,7 +86,7 @@ autoinstall:
         id: format-home
       - name: tmp
         volgroup: lvm_volgroup-0
-        size: 3072M
+        size: 4096M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-tmp
@@ -97,7 +97,7 @@ autoinstall:
         id: format-tmp
       - name: var
         volgroup: lvm_volgroup-0
-        size: 4096M
+        size: 8192M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-var
@@ -183,7 +183,9 @@ autoinstall:
         lock-passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
-%{ if length( build_key ) > 0 ~}
+%{ if length( ssh_keys ) > 0 ~}
         ssh_authorized_keys:
-          - ${ build_key }
+%{ for ssh_key in ssh_keys ~}
+          - ${ ssh_key }
+%{ endfor ~}        
 %{ endif ~}

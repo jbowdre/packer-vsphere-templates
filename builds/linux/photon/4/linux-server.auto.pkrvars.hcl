@@ -1,39 +1,39 @@
 /*
-    DESCRIPTION:
-    VMware Photon OS 4 variables used by the Packer Plugin for VMware vSphere (vsphere-iso).
+  VMware Photon OS 4 variables used by the Packer Plugin for VMware vSphere (vsphere-iso).
 */
 
 // Guest Operating System Metadata
-vm_guest_os_family   = "linux"
+vm_guest_os_family        = "linux"
+vm_guest_os_keyboard      = "us"
+vm_guest_os_language      = "en_US"
+vm_guest_os_timezone      = "UTC"
 
 // Virtual Machine Guest Operating System Setting
-vm_guest_os_type = "vmwarePhoton64Guest"
+vm_guest_os_type          = "vmwarePhoton64Guest"
 
 // Virtual Machine Hardware Settings
-vm_name                   = "Photon4"
-vm_firmware               = "efi-secure"
 vm_cdrom_type             = "sata"
-vm_cpu_count              = 2
 vm_cpu_cores              = 1
+vm_cpu_count              = 2
 vm_cpu_hot_add            = true
-vm_mem_size               = 2048
-vm_mem_hot_add            = true
-vm_disk_size              = 16384
 vm_disk_controller_type   = ["pvscsi"]
+vm_disk_size              = 16384
 vm_disk_thin_provisioned  = true
+vm_firmware               = "efi-secure"
+vm_mem_hot_add            = true
+vm_mem_size               = 2048
+vm_name                   = "Photon4"
 vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
-iso_url             = null
-iso_path            = "_ISO"
-iso_file            = "photon-4.0-c001795b8.iso"
-iso_checksum_type   = "md5"
-iso_checksum_value  = "5af288017d0d1198dd6bd02ad40120eb"
-
+iso_checksum_type         = "md5"
+iso_checksum_value        = "5af288017d0d1198dd6bd02ad40120eb"
+iso_file                  = "photon-4.0-c001795b8.iso"
+iso_url                   = null
 
 // Boot Settings
-vm_boot_order       = "disk,cdrom"
-vm_boot_wait        = "2s"
+vm_boot_order             = "disk,cdrom"
+vm_boot_wait              = "2s"
 vm_boot_command = [
     "<esc><wait>c",
     "linux /isolinux/vmlinuz root=/dev/ram0 loglevel=3 insecure_installation=1 ks=/dev/sr1:/ks.json photon.media=cdrom",
@@ -44,8 +44,8 @@ vm_boot_command = [
   ]
 
 // Communicator Settings
-communicator_port     = 22
-communicator_timeout  = "20m"
+communicator_port         = 22
+communicator_timeout      = "25m"
 
 // Provisioner Settings
 post_install_scripts = [

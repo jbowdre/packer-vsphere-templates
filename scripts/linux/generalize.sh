@@ -24,7 +24,7 @@ sudo sh -c 'if [ -f /etc/udev/rules.d/70-persistent-net.rules ]; then
   fi'
 
 # check for only RHEL releases
-if [[ $(awk -F= '/^ID=/{print $2}' /etc/os-release | grep rhel) ]]; then
+if awk -F= '/^ID=/{print $2}' /etc/os-release | grep -q rhel; then
   echo '>> Clearing RHSM subscription...'
   sudo subscription-manager unregister
   sudo subscription-manager clean
@@ -34,15 +34,18 @@ echo '>> Clearing temp dirs...'
 sudo rm -rf /tmp/*
 sudo rm -rf /var/tmp/*
 # check for RHEL-like releases (RHEL and Rocky)
-if [[ $(awk -F= '/^ID/{print $2}' /etc/os-release | grep rhel) ]]; then
+if awk -F= '/^ID/{print $2}' /etc/os-release | grep -q rhel; then
   sudo rm -rf /var/cache/dnf/*
   sudo rm -rf /var/log/rhsm/*
-elif [[ $(awk -F= '/^ID/{print $2}' /etc/os-release | grep photon) ]]; then
+elif awk -F= '/^ID/{print $2}' /etc/os-release | grep -q photon; then
   sudo rm -rf /var/cache/tdnf/*
 fi
 
 echo '>> Clearing host keys...'
 sudo rm -f /etc/ssh/ssh_host_*
+
+echo '>> Removing Packer SSH key...'
+sed -i '/packer_key/d' ~/.ssh/authorized_keys
 
 echo '>> Clearing machine-id...'
 sudo truncate -s 0 /etc/machine-id

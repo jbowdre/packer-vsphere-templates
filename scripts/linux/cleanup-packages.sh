@@ -1,11 +1,13 @@
 #!/bin/bash -eu
-if [[ $(awk -F= '/^ID/{print $2}' /etc/os-release | grep debian) ]]; then
-  echo "Nothing to do for Debians yet"
-elif [[ $(awk -F= '/^ID/{print $2}' /etc/os-release | grep rhel) ]]; then
-  if [[ $(which dnf) ]]; then
+if awk -F= '/^ID/{print $2}' /etc/os-release | grep -q debian; then
+  echo '>> Cleaning up unneeded packages...'
+  sudo apt-get -y autoremove --purge
+  sudo apt-get -y clean
+elif awk -F= '/^ID/{print $2}' /etc/os-release | grep -q rhel; then
+  if which dnf &>/dev/null; then
     echo '>> Cleaning up unneeded packages...'
     sudo dnf -y remove linux-firmware
-    sudo dnf -y remove $(dnf repoquery --installonly --latest-limit=-1 -q)
+    sudo dnf -y remove "$(dnf repoquery --installonly --latest-limit=-1 -q)"
     sudo dnf -y autoremove
     sudo dnf -y clean all --enablerepo=\*;
   else
@@ -15,6 +17,6 @@ elif [[ $(awk -F= '/^ID/{print $2}' /etc/os-release | grep rhel) ]]; then
     sudo yum -y autoremove
     sudo yum -y clean all --enablerepo=\*;
   fi
-elif [[ $(awk -F= '/^ID/{print $2}' /etc/os-release | grep photon) ]]; then
+elif awk -F= '/^ID/{print $2}' /etc/os-release | grep photon; then
   sudo tdnf -y clean all --enablerepo=\*;
 fi

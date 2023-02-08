@@ -1,149 +1,179 @@
 default:
   image: ghcr.io/jbowdre/packer-xorriso:latest
 
+variables:
+  VAULT_ADDR: "https://vault.example.com/"
+  VAULT_NAMESPACE: "example/lab"
+
+stages:
+  - build
+  - deploy
+
 stages:
   - build
   - deploy
 
 build_ws2019:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "ws2019"
+    - if: $BUILD == "all"
   script:
     - echo "Windows Server 2019 Packer build underway..."
     - packer init builds/windows/server/2019/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-win.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/windows/server/2019/"
 
 build_ws2022:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "ws2022"
+    - if: $BUILD == "all"
   script:
     - echo "Windows Server 2022 Packer build underway..."
     - packer init builds/windows/server/2022/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-win.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/windows/server/2022/"
 
 build_ubuntu2004:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "ubuntu2004"
+    - if: $BUILD == "all"
   script:
     - echo "Ubuntu 20.04 Packer build underway..."
     - packer init builds/linux/ubuntu/20-04-lts/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/ubuntu/20-04-lts/"
 
+build_ubuntu2204:
+  stage: build
+  retry:
+    max: 1
+  rules:
+    - if: $BUILD == "ubuntu2204"
+    - if: $BUILD == "all"
+  script:
+    - echo "Ubuntu 22.04 Packer build underway..."
+    - packer init builds/linux/ubuntu/22-04-lts/
+    - |
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/ubuntu/22-04-lts/"
+
 build_rocky9:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "rocky9"
+    - if: $BUILD == "all"
   script:
     - echo "Rocky 9 Packer build underway..."
     - packer init builds/linux/rocky/9/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/rocky/9/"
 
 build_rhel9:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "rhel9"
+    - if: $BUILD == "all"
   script:
     - echo "Red Hat Enterprise Linux 9 Packer build underway..."
     - packer init builds/linux/rhel/9/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
-      -var-file="builds/common_configs/rhsm.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/rhel/9/"
 
 build_rhel8:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "rhel8"
+    - if: $BUILD == "all"
   script:
     - echo "Red Hat Enterprise Linux 8 Packer build underway..."
     - packer init builds/linux/rhel/8/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
-      -var-file="builds/common_configs/rhsm.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/rhel/8/"
 
 build_rhel7:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "rhel7"
+    - if: $BUILD == "all"
   script:
     - echo "Red Hat Enterprise Linux 7 Packer build underway..."
     - packer init builds/linux/rhel/7/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
-      -var-file="builds/common_configs/rhsm.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/rhel/7/"
 
+build_cent7:
+  stage: build
+  retry:
+    max: 1
+  rules:
+    - if: $BUILD == "cent7"
+    - if: $BUILD == "all"
+  script:
+    - echo "CentOS 7 Packer build underway..."
+    - packer init builds/linux/cent/7/
+    - |
+      packer build -on-error=abort -force \
+      -var-file="builds/common_configs/common.pkrvars.hcl" \
+      "builds/linux/cent/7/"
+
 build_photon4:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "photon4"
+    - if: $BUILD == "all"
   script:
     - echo "VMware Photon OS 4 Packer build underway..."
     - packer init builds/linux/photon/4/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/photon/4/"
 
 build_bsp:
   stage: build
+  retry:
+    max: 1
   rules:
     - if: $BUILD == "bsp"
+    - if: $BUILD == "all"
   script:
     - echo "Bowdre Sync Platform appliance build underway..."
     - packer init builds/linux/photon/bsp/
-    - | 
+    - |
       packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/photon/bsp/"
-
-build_kube-u2004:
-  stage: build
-  rules:
-    - if: $BUILD == "kube-u2004"
-  script:
-    - echo "Kubernetes Ubuntu 20.04 node template build underway..."
-    - packer init builds/linux/ubuntu/20-04-kubes/
-    - | 
-      packer build -on-error=abort -force \
-      -var-file="builds/common_configs/vsphere.pkrvars.hcl" \
-      -var-file="builds/common_configs/build-lin.pkrvars.hcl" \
-      -var-file="builds/common_configs/common.pkrvars.hcl" \
-      "builds/linux/ubuntu/20-04-kubes/"

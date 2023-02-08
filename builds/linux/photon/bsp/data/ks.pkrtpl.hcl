@@ -49,6 +49,15 @@
           }
         },
         {
+          "mountpoint": "/var/lib/docker",
+          "size": 1024,
+          "filesystem": "ext4",
+          "lvm": {
+            "vg_name": "sysvg",
+            "lv_name": "lv_docker"
+          }
+        },
+        {
           "size": 512,
           "filesystem": "swap"
         }
@@ -60,6 +69,7 @@
         "linux",
         "logrotate",
         "minimal",
+        "nano",
         "openssl-c_rehash",
         "parted",
         "sudo",
@@ -74,7 +84,9 @@
         "chage -I -1 -m 0 -M 99999 -E -1 root",
         "chage -I -1 -m 0 -M 99999 -E -1 ${ build_username }",
         "sudo -u ${ build_username } mkdir -p /home/${ build_username }/.ssh",
-        "echo \"${ build_key }\" | sudo -u ${ build_username } tee /home/${ build_username }/.ssh/authorized_keys",
+%{ for ssh_key in ssh_keys ~}
+        "echo \"${ ssh_key }\" | sudo -u ${ build_username } tee -a /home/${ build_username }/.ssh/authorized_keys",
+%{ endfor }
         "systemctl restart iptables",
         "iptables -A INPUT -p icmp -j ACCEPT",
         "iptables-save > /etc/systemd/scripts/ip4save",

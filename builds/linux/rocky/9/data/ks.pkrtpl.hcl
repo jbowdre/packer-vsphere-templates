@@ -40,8 +40,10 @@ rootpw --lock
 ### Add a user that can login and escalate privileges.
 user --name=${ build_username } --iscrypted --password=${ build_password_encrypted } --groups=wheel
 
-### Insert SSH public key for the build user.
-sshkey --username=${ build_username } "${ build_key }"
+### Insert SSH public keys for the build user.
+%{ for ssh_key in ssh_keys ~}
+sshkey --username=${ build_username } "${ ssh_key }"
+%{ endfor }
 
 ### Configure firewall settings for the system.
 ### --enabled	reject incoming connections that are not in response to outbound requests
@@ -84,10 +86,9 @@ volgroup sysvg --pesize=4096 pv.01
 ### Modify logical volume sizes for the virtual machine hardware.
 ### Create logical volumes.
 logvol swap --fstype swap --name=lv_swap --vgname=sysvg --size=1024 --label=SWAPFS
-logvol /home --fstype xfs --name=lv_home --vgname=sysvg --size=4096 --label=HOMEFS --fsoptions="nodev,nosuid"
-logvol /opt --fstype xfs --name=lv_opt --vgname=sysvg --size=2048 --label=OPTFS --fsoptions="nodev"
+logvol /home --fstype xfs --name=lv_home --vgname=sysvg --size=8192 --label=HOMEFS --fsoptions="nodev,nosuid"
 logvol /tmp --fstype xfs --name=lv_tmp --vgname=sysvg --size=4096 --label=TMPFS --fsoptions="nodev,noexec,nosuid"
-logvol /var --fstype xfs --name=lv_var --vgname=sysvg --size=4096 --label=VARFS --fsoptions="nodev"
+logvol /var --fstype xfs --name=lv_var --vgname=sysvg --size=8192 --label=VARFS --fsoptions="nodev"
 logvol /var/log --fstype xfs --name=lv_log --vgname=sysvg --size=4096 --label=LOGFS --fsoptions="nodev,noexec,nosuid"
 logvol /var/log/audit --fstype xfs --name=lv_audit --vgname=sysvg --size=4096 --label=AUDITFS --fsoptions="nodev,noexec,nosuid"
 logvol / --fstype xfs --name=lv_root --vgname=sysvg --percent=100 --label=ROOTFS

@@ -90,7 +90,7 @@
             </ImageInstall>
             <UserData>
                 <AcceptEula>true</AcceptEula>
-                <Organization>${ vm_inst_os_org }</Organization>
+                <Organization>Example Org Inc</Organization>
                 <ProductKey>
                     <Key>${ vm_inst_os_kms_key }</Key>
                     <WillShowUI>OnError</WillShowUI>
@@ -107,15 +107,15 @@
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <OEMInformation>
                 <Logo>C:\Windows\System32\oemlogo.bmp</Logo>
-                <Manufacturer>${ vm_inst_os_org }</Manufacturer>
+                <Manufacturer>Example Org Inc</Manufacturer>
                 <SupportHours>24/7</SupportHours>
-                <SupportPhone>${ vm_inst_os_support_phone }</SupportPhone>
-                <SupportURL>${ vm_inst_os_support_url }</SupportURL>
+                <SupportPhone>48-1516-2342</SupportPhone>
+                <SupportURL>https://example.service-now.com/</SupportURL>
             </OEMInformation>
             <CopyProfile>true</CopyProfile>
-            <OEMName>${ vm_inst_os_org }</OEMName>
-            <RegisteredOrganization>${ vm_inst_os_org }</RegisteredOrganization>
-            <RegisteredOwner>${ build_username }</RegisteredOwner>
+            <OEMName>Example Org Inc</OEMName>
+            <RegisteredOrganization>Example Org Inc</RegisteredOrganization>
+            <RegisteredOwner>LAB</RegisteredOwner>
             <TimeZone>${ vm_guest_os_timezone }</TimeZone>
             <ComputerName>${ vm_guest_os_hostname }</ComputerName>
         </component>
@@ -192,8 +192,8 @@
                 </LocalAccounts>
             </UserAccounts>
             <TimeZone>${ vm_guest_os_timezone }</TimeZone>
-            <RegisteredOrganization>${ vm_inst_os_org }</RegisteredOrganization>
-            <RegisteredOwner>${ build_username }</RegisteredOwner>
+            <RegisteredOrganization>Example Org Inc</RegisteredOrganization>
+            <RegisteredOwner>LAB</RegisteredOwner>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
                     <Description>Set Execution Policy 64-bit</Description>
@@ -231,7 +231,7 @@
                     <Order>7</Order>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Description>Install CA certificates</Description>
+                    <Description>Install certificates</Description>
                     <CommandLine>cmd.exe /c powershell -ExecutionPolicy Bypass -File a:\install-certs.ps1</CommandLine>
                     <Order>8</Order>
                 </SynchronousCommand>
