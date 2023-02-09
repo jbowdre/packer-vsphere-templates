@@ -51,18 +51,12 @@ communicator_timeout      = "70m"
 post_install_scripts = [
   "scripts/windows/Create-PayloadFolder.ps1",
   "scripts/windows/Disable-WinServices.ps1",
-  "scripts/windows/Install-LAPS.ps1",
-  "scripts/windows/Install-SafeNet.ps1",
-  "scripts/windows/Install-Qualys-Server.ps1",
   "scripts/windows/Disable-IPv6.ps1",
-  "scripts/windows/Upgrade-VMTools.ps1",
   "scripts/windows/Enable-LUA.ps1",
   "scripts/windows/Task-ClearActionCenter.ps1"
 ]
 
 pre_final_scripts = [
   "scripts/windows/Task-CleanupWinRM.ps1",
-  "scripts/windows/Task-QualysTemplatePrep.ps1",
-  "scripts/windows/Install-Cortex.ps1",
   "scripts/windows/Clear-EventLogs.ps1"
 ]
