@@ -1,4 +1,17 @@
-﻿wget "https://choco.lab.example.com/apps/Clear-ActionCenterNotifications.ps1.txt" -outfile "C:\payload\Clear-ActionCenterNotifications.ps1"
+﻿$scriptContent = @"
+Start ms-actioncenter:
+Add-Type -AssemblyName System.Windows.Forms
+[System.Windows.Forms.SendKeys]::SendWait("+{TAB}")
+[System.Windows.Forms.SendKeys]::SendWait("+{TAB}")
+[System.Windows.Forms.SendKeys]::SendWait(" ")
+[System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+Start ms-actioncenter:
+Start-Sleep -s 4
+[System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+"@
+
+Set-Content -Path C:\payload\Clear-ActionCenterNotifications.ps1 -Value $scriptContent
+
 [string]$taskName = 'ClearActionCenter'
 [string]$updateScriptPath = 'c:\payload\Clear-ActionCenterNotifications.ps1'
 
