@@ -9,9 +9,10 @@ stages:
   - build
   - deploy
 
-stages:
-  - build
-  - deploy
+renew_vault_token:
+  stage: .pre
+  script:
+    - 'curl -s --header "X-Vault-Token:${VAULT_TOKEN}" --request POST "${VAULT_ADDR}v1/auth/token/renew-self" | grep -q auth'
 
 build_ws2019:
   stage: build
