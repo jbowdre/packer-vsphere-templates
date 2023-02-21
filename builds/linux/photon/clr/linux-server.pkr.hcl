@@ -39,8 +39,8 @@ data "sshkey" "install" {
 //
 // Standard configuration values:
 locals {
-  bsp_private_key               = vault("packer/data/bsp",              "syncer_private_key")   // SSH private key for BSP syncing
-  bsp_public_key                = vault("packer/data/bsp",              "syncer_public_key")    // SSH public key for BSP syncing
+  clr_private_key               = vault("packer/data/clr",              "syncer_private_key")   // SSH private key for CLR syncing
+  clr_public_key                = vault("packer/data/clr",              "syncer_public_key")    // SSH public key for CLR syncing
   build_public_key              = vault("packer/data/linux",            "public_key")           // SSH public key for the default admin account
   build_username                = vault("packer/data/linux",            "username")             // Username for the default admin account
   vsphere_cluster               = vault("packer/data/vsphere",          "cluster")              // Name of the target vSphere cluster
@@ -68,7 +68,7 @@ local "vsphere_password" {
 
 locals {
   build_date                    = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
-  build_description             = "Bowdre Sync Platform appliance\nBuild date: ${local.build_date}\nBuild tool: ${local.build_tool}"
+  build_description             = "Content Library Sync appliance\nBuild date: ${local.build_date}\nBuild tool: ${local.build_tool}"
   build_tool                    = "HashiCorp Packer ${packer.version}"
   iso_checksum                  = "${var.iso_checksum_type}:${var.iso_checksum_value}"
   iso_paths                     = ["[${local.vsphere_iso_datastore}] ${local.vsphere_iso_path}/${var.iso_file}"]
@@ -76,7 +76,7 @@ locals {
   ssh_private_key_file          = data.sshkey.install.private_key_path
   ssh_public_key                = data.sshkey.install.public_key
   data_source_content = {
-    "/ks.json"                  = templatefile("${abspath(path.root)}/data/ks.pkrtpl.hcl", {
+    "/ks.json"                  = templatefile("${aclrath(path.root)}/data/ks.pkrtpl.hcl", {
       build_username            = local.build_username
       build_password            = local.build_password
       build_password_encrypted  = bcrypt(local.build_password)
@@ -198,14 +198,14 @@ build {
   }
 
   provisioner "file" {
-    source                      = "${abspath(path.root)}/data"
+    source                      = "${aclrath(path.root)}/data"
     destination                 = "/tmp"
   }
 
   provisioner "shell" {
     env                         = {
-      "BSP_PRIVATE_KEY"         = local.bsp_private_key
-      "BSP_PUBLIC_KEY"          = local.bsp_public_key
+      "CLR_PRIVATE_KEY"         = local.clr_private_key
+      "CLR_PUBLIC_KEY"          = local.clr_public_key
     }
     execute_command             = "{{ .Vars }} bash {{ .Path }}"
     expect_disconnect           = true

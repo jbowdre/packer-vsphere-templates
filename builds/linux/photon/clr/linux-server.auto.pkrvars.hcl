@@ -22,7 +22,7 @@ vm_disk_thin_provisioned  = true
 vm_firmware               = "efi-secure"
 vm_mem_hot_add            = true
 vm_mem_size               = 2048
-vm_name                   = "bsp-appliance"
+vm_name                   = "clr-appliance"
 vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
@@ -52,7 +52,7 @@ post_install_scripts = [
   "scripts/linux/wait-for-cloud-init.sh",
   "scripts/linux/install-ca-certs.sh",
   "scripts/linux/persist-cloud-init-net.sh",
-  "builds/linux/photon/bsp/setup-bsp.sh",
+  "builds/linux/photon/clr/setup-clr.sh",
   "scripts/linux/update-packages.sh"
 ]
 

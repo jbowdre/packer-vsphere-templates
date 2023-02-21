@@ -1,13 +1,13 @@
 # Packer
 
-Packer Templates for Windows and Linux
+Build Windows and Linux server templates on vSphere with Packer
 
 ### Currently supported builds:
 #### Windows
 - [Windows Server 2019](builds/windows/server/2019)
 - [Windows Server 2022](builds/windows/server/2022)
 #### Linux
-- [Bowdre Sync Platform appliance](builds/linux/photon/bsp/)
+- [Content Library Rsync appliance](builds/linux/photon/clr/) (details [here](https://github.com/jbowdre/content-library-rsync))
 - [CentOS 7](builds/linux/cent/7/)
 - [Red Hat Enterprise Linux 7](builds/linux/rhel/7/)
 - [Red Hat Enterprise Linux 8](builds/linux/rhel/8/)

@@ -1,18 +1,19 @@
 #!/bin/bash -eu
+# Creates the clr-client configuration
 peer=
 tls="n"
 
 getInputs() {
-  read -rp 'FQDN of the upstream BSP appliance to sync content from: ' peer
+  read -rp 'FQDN of the upstream CLR appliance to sync content from: ' peer
   read -rp 'Enable TLS? (y/N): ' tls
 }
 
 helpText() {
   echo -e "\nUsage: $0 -p UPSTREAM_PEER [-s] [-t]"
   echo -e "\nMandatory parameter:"
-  echo -e "\t-p, --peer UPSTREAM_PEER \tFully-qualified domain name of the upstream BSP appliance to sync content from"
+  echo -e "\t-p, --peer UPSTREAM_PEER \tFully-qualified domain name of the upstream CLR appliance to sync content from"
   echo -e "\nOptional flags:"
-  echo -e "\t-t, --enable-tls \t\t\tEnable TLS (if not set, the BSP library will be served over HTTP)"
+  echo -e "\t-t, --enable-tls \t\t\tEnable TLS (if not set, the CLR library will be served over HTTP)"
   exit 0
 }
 
@@ -30,10 +31,10 @@ prompt = no
 
 [ req_distinguished_name ]
 C = US
-ST = Alabama
-L = Huntsville
+ST = Example State
+L = Example City
 O = Example Org
-OU = LAB
+OU = Example OU
 CN = $(hostname)
 
 [ v3_req ]
@@ -68,10 +69,10 @@ doConfig() {
   cat << EOF > docker-compose.yaml
 version: "3"
 services:
-  bsp-client:
-    container_name: bsp-client
+  clr-client:
+    container_name: clr-client
     restart: unless-stopped
-    image: harbor.lab.example.com/library/bsp-client:latest
+    image: ghcr.io/jbowdre/clr-client:latest
     environment:
       - LIBRARY_BROWSE=true
       - LIBRARY_NAME=$(hostname)
@@ -89,7 +90,7 @@ services:
       - "443:443/tcp"
     volumes:
       - './data/ssh:/syncer/.ssh'
-      - '/opt/bsp-library:/syncer/library'
+      - '/opt/clr-library:/syncer/library'
       - './data/certs:/etc/caddycerts'
 EOF
 }

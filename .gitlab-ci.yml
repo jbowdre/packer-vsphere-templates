@@ -164,17 +164,17 @@ build_photon4:
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/photon/4/"
 
-build_bsp:
+build_clr:
   stage: build
   retry:
     max: 1
   rules:
-    - if: $BUILD == "bsp"
+    - if: $BUILD == "clr"
     - if: $BUILD == "all"
   script:
-    - echo "Bowdre Sync Platform appliance build underway..."
-    - packer init builds/linux/photon/bsp/
+    - echo "Content Library Rsync appliance build underway..."
+    - packer init builds/linux/photon/clr/
     - |
       packer build -on-error=abort -force \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
-      "builds/linux/photon/bsp/"
+      "builds/linux/photon/clr/"
