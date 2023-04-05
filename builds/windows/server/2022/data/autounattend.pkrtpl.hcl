@@ -207,7 +207,7 @@
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <Description>Set local account to not expire</Description>
-                    <CommandLine>cmd.exe /c wmic useraccount where "name=${ build_username }" set PasswordExpires=FALSE</CommandLine>
+                    <CommandLine>cmd.exe /c wmic useraccount where "name='${ build_username }'" set PasswordExpires=FALSE</CommandLine>
                     <Order>3</Order>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
