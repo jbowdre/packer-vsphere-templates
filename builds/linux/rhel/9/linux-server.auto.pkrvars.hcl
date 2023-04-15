@@ -38,8 +38,8 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_checksum_type         = "sha256"
-iso_checksum_value        = "c6942e3ed65947ed48c30589d9c1a752e96c5b94ee8de1923331449fee162cc1"
-iso_file                  = "rhel-baseos-9.0-x86_64-dvd.iso"
+iso_checksum_value        = "7761cc6e6fc84c2e0cf65bc724585dcb3cd0d9c79a2bc38e943edc52cbfc5241"
+iso_file                  = "rhel-9.0-x86_64-dvd.iso"
 iso_url                   = null
 
 // Boot Settings
