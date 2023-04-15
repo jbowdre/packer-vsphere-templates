@@ -20,8 +20,8 @@ Build Windows and Linux server templates on vSphere with Packer
 To run a build locally (not via GitLab CI), you'll need to first export a few Vault-related environment variables:
 ```shell
 export VAULT_ADDR="https://vault.lab.example.com"
-export VAULT_NAMESPACE="example/LAB"
-export VAULT_TOKEN=""     # insert a Vault token ID
+export VAULT_NAMESPACE="example/LAB"      # (only available in Vault Enterprise)
+export VAULT_TOKEN=""                     # insert a Vault token ID
 ```
 
 Then just copy/paste the corresponding `packer build` line from [.gitlab-ci.yml](.gitlab-ci.yml). For example, to run a Windows Server 2022 build:

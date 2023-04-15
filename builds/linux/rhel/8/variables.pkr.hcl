@@ -126,6 +126,53 @@ variable "vm_network_card" {
   default       = "vmxnet3"
 }
 
+// VM Guest Partition Sizes
+variable "vm_guest_part_audit" {
+  type          = number
+  description   = "Size of the /var/log/audit partition in MB."
+}
+
+variable "vm_guest_part_boot" {
+  type          = number
+  description   = "Size of the /boot partition in MB."
+}
+
+variable "vm_guest_part_home" {
+  type          = number
+  description   = "Size of the /home partition in MB."
+}
+
+variable "vm_guest_part_log" {
+  type          = number
+  description   = "Size of the /var/log partition in MB."
+}
+
+variable "vm_guest_part_root" {
+  type          = number
+  description   = "Size of the /var partition in MB. Set to 0 to consume all remaining free space."
+  default       = 0
+}
+
+variable "vm_guest_part_swap" {
+  type          = number
+  description   = "Size of the swap partition in MB."
+}
+
+variable "vm_guest_part_tmp" {
+  type          = number
+  description   = "Size of the /tmp partition in MB."
+}
+
+variable "vm_guest_part_var" {
+  type          = number
+  description   = "Size of the /var partition in MB."
+}
+
+variable "vm_guest_part_vartmp" {
+  type          = number
+  description   = "Size of the /var/tmp partition in MB."
+}
+
 // Template and Content Library Settings
 
 variable "common_content_library_destroy" {

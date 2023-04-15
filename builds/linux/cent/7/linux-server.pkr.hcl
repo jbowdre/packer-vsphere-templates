@@ -78,11 +78,21 @@ locals {
       build_password            = local.build_password
       build_password_encrypted  = bcrypt(local.build_password)
       build_username            = local.build_username
+      rpm_packages              = var.kickstart_rpm_packages
       ssh_keys                  = concat([local.ssh_public_key], [local.build_public_key])
       vm_guest_os_hostname      = var.vm_name
       vm_guest_os_keyboard      = var.vm_guest_os_keyboard
       vm_guest_os_language      = var.vm_guest_os_language
       vm_guest_os_timezone      = var.vm_guest_os_timezone
+      vm_guest_part_audit       = var.vm_guest_part_audit
+      vm_guest_part_boot        = var.vm_guest_part_boot
+      vm_guest_part_home        = var.vm_guest_part_home
+      vm_guest_part_log         = var.vm_guest_part_log
+      vm_guest_part_root        = var.vm_guest_part_root
+      vm_guest_part_swap        = var.vm_guest_part_swap
+      vm_guest_part_tmp         = var.vm_guest_part_tmp
+      vm_guest_part_var         = var.vm_guest_part_var
+      vm_guest_part_vartmp      = var.vm_guest_part_vartmp
     })
   }
 }
