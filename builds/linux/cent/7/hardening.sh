@@ -422,8 +422,8 @@ sudo chmod 600 /boot/grub2/grub.cfg
 
 rule_name="Set Boot Loader Password in grub2"
 current_task "$rule_name"
-encrypted_grub_password="GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.1D5F307164ABF2990A207D2170E90950F572D3BF37A5C94E4F6934FA27C4C68C526FA726580E53196B388AC35C45BCA023CEB7E207994FAD82D504C1F00F6F34.F6C77D2DD04B9278C3ED597D454EE0A53E59D3B30FF55D65BC983329BFEF2F2278D07FFC25F94D4F0743CFEE417648D53EEF4A04F4775D4D933BB39942DA1F3D"
-echo "${encrypted_grub_password}" | sudo tee /boot/grub2/user.cfg
+encrypted_grub_password=$(echo -e "$BOOTLOADER_PASSWORD\n$BOOTLOADER_PASSWORD" | grub-mkpasswd-pbkdf2 | awk '/grub.pbkdf2/ { print $NF }')
+echo "GRUB2_PASSWORD=${encrypted_grub_password}" | sudo tee /boot/grub2/user.cfg
 sudo chmod 600 /boot/grub2/user.cfg
 sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 

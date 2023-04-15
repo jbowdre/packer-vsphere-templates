@@ -39,6 +39,7 @@ data "sshkey" "install" {
 //
 // Standard configuration values:
 locals {
+  bootloader_username           = vault("packer/data/linux",            "bootloader_username")  // Username for bootloader access
   build_public_key              = vault("packer/data/linux",            "public_key")           // SSH public key for the default admin account
   build_username                = vault("packer/data/linux",            "username")             // Username for the default admin account
   vsphere_cluster               = vault("packer/data/vsphere",          "cluster")              // Name of the target vSphere cluster
@@ -53,6 +54,10 @@ locals {
   vsphere_username              = vault("packer/data/vsphere",          "username")             // Username for authenticating to vSphere
 }
 // Sensitive values:
+local "bootloader_password"{
+  expression                    = vault("packer/data/linux",            "bootloader_password")  // Password to set for the bootloader
+  sensitive                     = true
+}
 local "build_password" {
   expression                    = vault("packer/data/linux",            "password")             // Password to set for the default admin account
   sensitive                     = true
@@ -229,7 +234,11 @@ build {
   }
 
   provisioner "shell" {
-    execute_command             = "bash {{ .Path }}"
+    env                         = {
+      "BOOTLOADER_PASSWORD"     = local.bootloader_password
+      "BOOTLOADER_USERNAME"     = local.bootloader_username
+    }
+    execute_command             = "{{ .Vars }} bash {{ .Path }}"
     expect_disconnect           = true
     scripts                     = formatlist("${path.cwd}/%s", var.pre_final_scripts)
   }

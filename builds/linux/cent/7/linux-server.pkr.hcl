@@ -53,6 +53,10 @@ locals {
   vsphere_username              = vault("packer/data/vsphere",          "username")             // Username for authenticating to vSphere
 }
 // Sensitive values:
+local "bootloader_password"{
+  expression                    = vault("packer/data/linux",            "bootloader_password")  // Password to set for the bootloader
+  sensitive                     = true
+}
 local "build_password" {
   expression                    = vault("packer/data/linux",            "password")             // Password to set for the default admin account
   sensitive                     = true
@@ -218,7 +222,10 @@ build {
   }
 
   provisioner "shell" {
-    execute_command             = "bash {{ .Path }}"
+    env                         = {
+      "BOOTLOADER_PASSWORD"     = local.bootloader_password
+    }
+    execute_command             = "{{ .Vars }} bash {{ .Path }}"
     expect_disconnect           = true
     pause_before                = "30s"
     scripts                     = formatlist("${path.cwd}/%s", var.pre_final_scripts)
