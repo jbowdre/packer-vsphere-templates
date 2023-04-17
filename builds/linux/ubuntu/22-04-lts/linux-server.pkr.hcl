@@ -227,19 +227,12 @@ build {
     env                         = {
       "ADMIN_USERNAME"          = local.build_username
       "ADMIN_PASSWORD"          = local.build_password
-    }
-    execute_command             = "{{ .Vars }} bash {{ .Path }}"
-    pause_before                = "30s"
-    script                      = "scripts/linux/set-admin-password.sh"
-  }
-
-  provisioner "shell" {
-    env                         = {
       "BOOTLOADER_PASSWORD"     = local.bootloader_password
-      "BOOTLOADEWR_USERNAME"    = local.bootloader_username
+      "BOOTLOADER_USERNAME"     = local.bootloader_username
     }
     execute_command             = "{{ .Vars }} bash {{ .Path }}"
     expect_disconnect           = true
+    pause_before                = "30s"
     scripts                     = formatlist("${path.cwd}/%s", var.pre_final_scripts)
   }
 }

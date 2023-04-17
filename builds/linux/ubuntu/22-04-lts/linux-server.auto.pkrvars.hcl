@@ -84,6 +84,7 @@ pre_final_scripts = [
   "scripts/linux/cleanup-cloud-init.sh",
   "scripts/linux/enable-vmware-customization.sh",
   "scripts/linux/cleanup-packages.sh",
+  "scripts/linux/set-admin-password.sh",
   "builds/linux/ubuntu/22-04-lts/hardening.sh",
   "scripts/linux/zero-disk.sh",
   "scripts/linux/generalize.sh"
