@@ -104,7 +104,7 @@ services --enabled=NetworkManager,sshd
 ### Do not configure X on the installed system.
 skipx
 
-### Packages selection.
+### Packages selection
 %packages --ignoremissing --excludedocs
 @core
 %{ for rpm_package in rpm_packages ~}
