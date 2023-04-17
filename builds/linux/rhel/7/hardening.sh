@@ -504,12 +504,12 @@ modules=(
 )
 for module in "${modules[@]}"; do
   module_file="/etc/modprobe.d/${module}-blacklist.conf"
-  if LC_ALL=C grep -q -m 1 "^install ${module}" "${module_file}"; then
+  if LC_ALL=C grep -q -m 1 "^install ${module}" "${module_file}" 2>/dev/null; then
     sudo sed -i "s#^install ${module}.*#install ${module} /bin/true#g" "${module_file}"
   else
     echo "install ${module} /bin/true" | sudo tee -a "${module_file}"
   fi
-  if ! LC_ALL=C grep -q -m 1 "^blacklist ${module}$" "${module_file}"; then
+  if ! LC_ALL=C grep -q -m 1 "^blacklist ${module}$" "${module_file}" 2>/dev/null; then
     echo "blacklist ${module}" | sudo tee -a "${module_file}"
   fi
 done
