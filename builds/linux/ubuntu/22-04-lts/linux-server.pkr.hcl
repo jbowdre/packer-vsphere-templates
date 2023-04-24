@@ -227,7 +227,6 @@ build {
       "ADMIN_USERNAME"          = local.build_username
       "ADMIN_PASSWORD"          = local.build_password
       "BOOTLOADER_PASSWORD"     = local.bootloader_password
-      "BOOTLOADER_USERNAME"     = local.bootloader_username
     }
     execute_command             = "{{ .Vars }} bash {{ .Path }}"
     expect_disconnect           = true
