@@ -39,7 +39,6 @@ data "sshkey" "install" {
 //
 // Standard configuration values:
 locals {
-  bootloader_username           = vault("packer/data/linux",            "bootloader_username")  // Username for bootloader access
   build_public_key              = vault("packer/data/linux",            "public_key")           // SSH public key for the default admin account
   build_username                = vault("packer/data/linux",            "username")             // Username for the default admin account
   vsphere_cluster               = vault("packer/data/vsphere",          "cluster")              // Name of the target vSphere cluster

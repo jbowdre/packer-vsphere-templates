@@ -595,7 +595,7 @@ sudo update-grub
 rule_name="Set the UEFI Boot Loader Password"
 current_task "$rule_name"
 encrypted_grub_password=$(echo -e "$BOOTLOADER_PASSWORD\n$BOOTLOADER_PASSWORD" | grub-mkpasswd-pbkdf2 | awk '/grub.pbkdf2/ { print $NF }')
-echo -e "set superusers=\"$BOOTLOADER_USERNAME\"\npassword_pbkdf2 $BOOTLOADER_USERNAME ${encrypted_grub_password}" | sudo tee -a /etc/grub.d/40_custom
+echo -e "set superusers=\"root\"\npassword_pbkdf2 root ${encrypted_grub_password}" | sudo tee -a /etc/grub.d/40_custom
 # Allow booting without password
 sudo sed -i "s/\(^CLASS=\".*\)\"/\1 --unrestricted\"/" '/etc/grub.d/10_linux'
 sudo update-grub

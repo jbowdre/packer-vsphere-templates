@@ -537,7 +537,7 @@ sudo grubby --update-kernel=ALL --args=audit_backlog_limit=8192
 
 rule_name="Set Boot Loader Password in grub2"
 current_task "$rule_name"
-encrypted_grub_password=$(echo -e "$BOOTLOADER_PASSWORD\n$BOOTLOADER_PASSWORD" | grub-mkpasswd-pbkdf2 | awk '/grub.pbkdf2/ { print $NF }')
+encrypted_grub_password=$(echo -e "$BOOTLOADER_PASSWORD\n$BOOTLOADER_PASSWORD" | grub2-mkpasswd-pbkdf2 | awk '/grub.pbkdf2/ { print $NF }')
 echo "GRUB2_PASSWORD=${encrypted_grub_password}" | sudo tee /boot/grub2/user.cfg
 sudo chmod 600 /boot/grub2/user.cfg
 sudo grub2-mkconfig -o /boot/grub2/grub.cfg
