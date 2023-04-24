@@ -822,14 +822,16 @@ sshd_options=(
   "HostbasedAuthentication no"
   "IgnoreRhosts yes"
   "LoginGraceTime 60"
-  "LogLevel INFO"
+  "LogLevel VERBOSE"
   "MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1"
   "MaxAuthTries 4"
   "MaxSessions 10"
   "MaxStartups 10:30:60"
+  "PasswordAuthentication yes"
   "PermitEmptyPasswords no"
   "PermitRootLogin no"
   "PermitUserEnvironment no"
+  "PubkeyAuthentication yes"
   "X11Forwarding no"
 )
 for sshd_option in "${sshd_options[@]}"; do

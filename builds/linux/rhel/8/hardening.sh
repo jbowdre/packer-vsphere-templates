@@ -674,37 +674,44 @@ rule_name="Verify Permiissions on crontab (0600)"
 current_task "$rule_name"
 sudo chmod u-xs,g-xwrs,o-xwrt /etc/crontab
 
-rule_name="Configure SSHD: ClientAliveCountMax/ClientAliveInterval, HostbasedAuthentication, PermitEmptyPasswords, IgnoreRhosts, AllowTcpForwarding, X11Forwarding, PermitUserEnvironment, SSH Banner, LoginGraceTime, LogLevel, MaxAuthTries, MaxSessions, MaxStartups"
+rule_name="Configure SSH Server"
 current_task "$rule_name"
+SSH_CONFIG_FILE="/etc/ssh/sshd_config"
+SSH_CONFIG_FILE_BACKUP="/etc/ssh/sshd_config.bak"
 sshd_options=(
   "AllowTcpForwarding no"
   "Banner /etc/issue.net"
-  "ClientAliveCountMax 0"
-  "ClientAliveInterval 900"
+  "Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc"
+  "ClientAliveCountMax 3"
+  "ClientAliveInterval 300"
   "HostbasedAuthentication no"
   "IgnoreRhosts yes"
   "LoginGraceTime 60"
   "LogLevel VERBOSE"
+  "MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1"
   "MaxAuthTries 4"
   "MaxSessions 10"
   "MaxStartups 10:30:60"
+  "PasswordAuthentication yes"
   "PermitEmptyPasswords no"
+  "PermitRootLogin no"
   "PermitUserEnvironment no"
+  "PubkeyAuthentication yes"
   "X11Forwarding no"
 )
 for sshd_option in "${sshd_options[@]}"; do
   sshd_option_base=$(echo "${sshd_option}" | cut -d ' ' -f 1)
-  sudo LC_ALL=C sed -i "/^\s*${sshd_option_base}\s\+/Id" "/etc/ssh/sshd_config"
-  sudo cp "/etc/ssh/sshd_config" "/etc/ssh/sshd_config.bak"
-  line_number="$(sudo LC_ALL=C grep -n "^${sshd_option_base}" "/etc/ssh/sshd_config.bak" | LC_ALL=C sed 's/:.*//g')"
+  sudo LC_ALL=C sed -i "/^\s*${sshd_option_base}\s\+/Id" "${SSH_CONFIG_FILE}"
+  sudo cp "${SSH_CONFIG_FILE}" "${SSH_CONFIG_FILE_BACKUP}"
+  line_number="$(sudo LC_ALL=C grep -n "^${sshd_option_base}" "${SSH_CONFIG_FILE_BACKUP}" | LC_ALL=C sed 's/:.*//g')"
   if [ -z "${line_number}" ]; then
-    printf '%s\n' "${sshd_option}" | sudo tee -a "/etc/ssh/sshd_config"
+    printf '%s\n' "${sshd_option}" | sudo tee -a "${SSH_CONFIG_FILE}"
   else
-    head -n "$(( line_number - 1 ))" "/etc/ssh/sshd_config.bak" | sudo tee "/etc/ssh/sshd_config"
-    printf '%s\n' "${sshd_option}" | sudo tee -a "/etc/ssh/sshd_config"
-    tail -n "$(( line_number ))" "/etc/ssh/sshd_config.bak" | sudo tee -a "/etc/ssh/sshd_config"
+    head -n "$(( line_number - 1 ))" "${SSH_CONFIG_FILE_BACKUP}" | sudo tee "${SSH_CONFIG_FILE}"
+    printf '%s\n' "${sshd_option}" | sudo tee -a "${SSH_CONFIG_FILE}"
+    tail -n "$(( line_number ))" "${SSH_CONFIG_FILE_BACKUP}" | sudo tee -a "${SSH_CONFIG_FILE}}"
   fi
-  sudo rm "/etc/ssh/sshd_config.bak"
+  sudo rm "${SSH_CONFIG_FILE_BACKUP}"
 done
 
 rule_name="Build and Test AIDE Database"

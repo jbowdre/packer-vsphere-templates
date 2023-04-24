@@ -68,7 +68,6 @@ kickstart_rpm_packages = [
 ]
 
 post_install_scripts = [
-  "scripts/linux/configure-sshd.sh",
   "scripts/linux/install-ca-certs.sh",
   "scripts/linux/update-packages.sh"
 ]
