@@ -306,7 +306,7 @@ variable "common_ip_wait_timeout" {
   description   = "Time to wait for guest operating system IP address response."
 }
 
-// Communicator Settings
+// Communicator Settings and Credentials
 
 variable "build_remove_keys" {
   type          = bool
