@@ -11,6 +11,17 @@ vm_guest_os_timezone      = "America/Chicago"
 // Virtual Machine Guest Operating System Setting
 vm_guest_os_type          = "rhel9_64Guest"
 
+//Virtual Machine Guest Partition Sizes (in MB)
+vm_guest_part_audit       = 4096
+vm_guest_part_boot        = 512
+vm_guest_part_home        = 8192
+vm_guest_part_log         = 4096
+vm_guest_part_root        = 0
+vm_guest_part_swap        = 1024
+vm_guest_part_tmp         = 4096
+vm_guest_part_var         = 8192
+vm_guest_part_vartmp      = 1024
+
 // Virtual Machine Hardware Settings
 vm_cdrom_type             = "sata"
 vm_cpu_cores              = 1
@@ -27,8 +38,8 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_checksum_type         = "sha256"
-iso_checksum_value        = "c6942e3ed65947ed48c30589d9c1a752e96c5b94ee8de1923331449fee162cc1"
-iso_file                  = "rhel-baseos-9.0-x86_64-dvd.iso"
+iso_checksum_value        = "7761cc6e6fc84c2e0cf65bc724585dcb3cd0d9c79a2bc38e943edc52cbfc5241"
+iso_file                  = "rhel-9.0-x86_64-dvd.iso"
 iso_url                   = null
 
 // Boot Settings
@@ -47,10 +58,18 @@ communicator_port         = 22
 communicator_timeout      = "25m"
 
 // Provisioner Settings
+kickstart_rpm_packages = [
+  "cloud-utils-growpart",
+  "dbus-tools",
+  "net-tools",
+  "perl",
+  "vim",
+  "wget"
+]
+
 post_install_scripts = [
-  "scripts/linux/configure-sshd.sh",
   "scripts/linux/install-ca-certs.sh",
-   "scripts/linux/update-packages.sh"
+  "scripts/linux/update-packages.sh"
 ]
 
 pre_final_scripts = [
@@ -59,6 +78,7 @@ pre_final_scripts = [
   "scripts/linux/cleanup-cloud-init.sh",
   "scripts/linux/enable-vmware-customization.sh",
   "scripts/linux/cleanup-packages.sh",
+  "builds/linux/rhel/9/hardening.sh",
   "scripts/linux/zero-disk.sh",
   "scripts/linux/generalize.sh"
 ]

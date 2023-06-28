@@ -8,7 +8,7 @@
 ### Installs from the first attached CD-ROM/DVD on the system.
 cdrom
 
-### Performs the kickstart installation in text mode. 
+### Performs the kickstart installation in text mode.
 ### By default, kickstart installations are performed in graphical mode.
 text
 
@@ -62,7 +62,7 @@ bootloader --location=mbr
 ### Initialize any invalid partition tables found on disks.
 zerombr
 
-### Removes partitions from the system, prior to creation of new partitions. 
+### Removes partitions from the system, prior to creation of new partitions.
 ### By default, no partitions are removed.
 ### --linux	erases all Linux partitions.
 ### --initlabel Initializes a disk (or disks) by creating a default disk label for all disks in their respective architecture.
@@ -70,7 +70,7 @@ clearpart --all --initlabel
 
 ### Modify partition sizes for the virtual machine hardware.
 ### Create primary system partitions.
-part /boot --fstype xfs --size=1024 --label=BOOTFS
+part /boot --fstype xfs --size=${ vm_guest_part_boot } --label=BOOTFS
 part pv.01 --size=100 --grow
 
 ### Create a logical volume management (LVM) group.
@@ -78,13 +78,18 @@ volgroup sysvg --pesize=4096 pv.01
 
 ### Modify logical volume sizes for the virtual machine hardware.
 ### Create logical volumes.
-logvol swap --fstype swap --name=lv_swap --vgname=sysvg --size=1024 --label=SWAPFS
-logvol /home --fstype xfs --name=lv_home --vgname=sysvg --size=8192 --label=HOMEFS --fsoptions="nodev,nosuid"
-logvol /tmp --fstype xfs --name=lv_tmp --vgname=sysvg --size=4096 --label=TMPFS --fsoptions="nodev,noexec,nosuid"
-logvol /var --fstype xfs --name=lv_var --vgname=sysvg --size=8192 --label=VARFS --fsoptions="nodev"
-logvol /var/log --fstype xfs --name=lv_log --vgname=sysvg --size=4096 --label=LOGFS --fsoptions="nodev,noexec,nosuid"
-logvol /var/log/audit --fstype xfs --name=lv_audit --vgname=sysvg --size=4096 --label=AUDITFS --fsoptions="nodev,noexec,nosuid"
+logvol swap --fstype swap --name=lv_swap --vgname=sysvg --size=${ vm_guest_part_swap } --label=SWAPFS
+logvol /home --fstype xfs --name=lv_home --vgname=sysvg --size=${ vm_guest_part_home } --label=HOMEFS --fsoptions="nodev,nosuid"
+logvol /tmp --fstype xfs --name=lv_tmp --vgname=sysvg --size=${ vm_guest_part_tmp } --label=TMPFS --fsoptions="nodev,noexec,nosuid"
+logvol /var --fstype xfs --name=lv_var --vgname=sysvg --size=${ vm_guest_part_var } --label=VARFS --fsoptions="nodev"
+logvol /var/log --fstype xfs --name=lv_log --vgname=sysvg --size=${ vm_guest_part_log } --label=LOGFS --fsoptions="nodev,noexec,nosuid"
+logvol /var/log/audit --fstype xfs --name=lv_audit --vgname=sysvg --size=${ vm_guest_part_audit } --label=AUDITFS --fsoptions="nodev,noexec,nosuid"
+logvol /var/tmp --fstype xfs --name=lv_vartmp --vgname=sysvg --size=${ vm_guest_part_vartmp } --label=VARTMPFS --fsoptions="nodev,noexec,nosuid"
+%{ if vm_guest_part_root == 0 ~}
 logvol / --fstype xfs --name=lv_root --vgname=sysvg --percent=100 --label=ROOTFS
+%{ else ~}
+logvol / --fstype xfs --name=lv_root --vgname=sysvg --size=${ vm_guest_part_root } --label=ROOTFS
+%{ endif ~}
 
 ### Modifies the default set of services that will run under the default runlevel.
 services --enabled=NetworkManager,sshd
@@ -92,14 +97,12 @@ services --enabled=NetworkManager,sshd
 ### Do not configure X on the installed system.
 skipx
 
-### Packages selection.
+### Packages selection
 %packages --ignoremissing --excludedocs
 @core
-net-tools
-perl
-vim
-wget
-yum-utils
+%{ for rpm_package in rpm_packages ~}
+${rpm_package}
+%{ endfor }
 
 #### Remove unneeded firmware
 -aic94xx-firmware
@@ -140,7 +143,7 @@ fi
 /usr/sbin/subscription-manager repos --enable "rhel--optional-rpms" --enable "rhel--extras-rpms" --enable "rhel-ha-for-rhel-*-server-rpms"
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum makecache
-yum install -y sudo open-vm-tools perl
+yum install -y sudo open-vm-tools
 echo "${ build_username } ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${ build_username }
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 sudo -u ${ build_username } mkdir -m 700 /home/${ build_username }/.ssh

@@ -39,7 +39,7 @@ autoinstall:
         type: disk
         id: disk-sda
       - device: disk-sda
-        size: 1024M
+        size: ${ vm_guest_part_efi }M
         wipe: superblock
         flag: boot
         number: 1
@@ -52,7 +52,7 @@ autoinstall:
         type: format
         id: format-efi
       - device: disk-sda
-        size: 1024M
+        size: ${ vm_guest_part_boot }M
         wipe: superblock
         number: 2
         type: partition
@@ -75,7 +75,7 @@ autoinstall:
         id: lvm_volgroup-0
       - name: home
         volgroup: lvm_volgroup-0
-        size: 8192M
+        size: ${ vm_guest_part_home}M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-home
@@ -86,7 +86,7 @@ autoinstall:
         id: format-home
       - name: tmp
         volgroup: lvm_volgroup-0
-        size: 4096M
+        size: ${ vm_guest_part_tmp }M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-tmp
@@ -97,7 +97,7 @@ autoinstall:
         id: format-tmp
       - name: var
         volgroup: lvm_volgroup-0
-        size: 8192M
+        size: ${ vm_guest_part_var }M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-var
@@ -108,7 +108,7 @@ autoinstall:
         id: format-var
       - name: log
         volgroup: lvm_volgroup-0
-        size: 4096M
+        size: ${ vm_guest_part_log }M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-log
@@ -119,7 +119,7 @@ autoinstall:
         id: format-log
       - name: audit
         volgroup: lvm_volgroup-0
-        size: 4096M
+        size: ${ vm_guest_part_audit }M
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-audit
@@ -128,9 +128,24 @@ autoinstall:
         type: format
         label: AUDITFS
         id: format-audit
+      - name: vartmp
+        volgroup: lvm_volgroup-0
+        size: ${ vm_guest_part_vartmp }M
+        wipe: superblock
+        type: lvm_partition
+        id: lvm_partition-vartmp
+      - fstype: xfs
+        volume: lvm_partition-vartmp
+        type: format
+        label: VARTMPFS
+        id: format-vartmp
       - name: root
         volgroup: lvm_volgroup-0
+%{ if vm_guest_part_root == 0 ~}
         size: -1
+%{ else ~}
+        size: ${ vm_guest_part_root }M
+%{ endif ~}
         wipe: superblock
         type: lvm_partition
         id: lvm_partition-root
@@ -171,6 +186,10 @@ autoinstall:
         device: format-audit
         type: mount
         id: mount-audit
+      - path: /var/tmp
+        device: format-vartmp
+        type: mount
+        id: mount-vartmp
   user-data:
     package_upgrade: true
     disable_root: true
@@ -178,7 +197,6 @@ autoinstall:
     hostname: ${ vm_guest_os_hostname }
     users:
       - name: ${ build_username }
-        passwd: "${ build_password }"
         groups: [adm, cdrom, dip, plugdev, lxd, sudo]
         lock-passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL
@@ -187,5 +205,5 @@ autoinstall:
         ssh_authorized_keys:
 %{ for ssh_key in ssh_keys ~}
           - ${ ssh_key }
-%{ endfor ~}        
+%{ endfor ~}
 %{ endif ~}

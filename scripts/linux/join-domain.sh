@@ -23,11 +23,31 @@ helpText() {
 }
 
 installRhel() {
-  sudo yum install -y realmd sssd sssd-tools adcli samba-common-tools oddjob oddjob-mkhomedir
+  sudo yum install -y \
+  adcli \
+  krb5-workstation \
+  oddjob \
+  oddjob-mkhomedir \
+  realmd \
+  samba-common-tools \
+  sssd \
+  sssd-tools
 }
 
 installDebian() {
-  sudo apt-get -y install realmd sssd sssd-tools libnss-sss libpam-sss adcli samba-common-bin oddjob oddjob-mkhomedir packagekit
+  sudo apt-get update
+  sudo apt-get -y install \
+  adcli \
+  krb5-user \
+  libnss-sss \
+  libpam-sss \
+  oddjob \
+  oddjob-mkhomedir \
+  packagekit \
+  realmd \
+  samba-common-bin \
+  sssd \
+  sssd-tools
 }
 
 joinDomain() {
@@ -118,7 +138,7 @@ EOF"
 
   echo "(Re)starting services..."
   sudo systemctl restart sssd
-  sudo pam-auth-update --enable mkhomedir
+  sudo pam-auth-update --enable mkhomedir --force
   sudo realm deny --all
   sudo realm permit --groups "${adminGroup}"
 

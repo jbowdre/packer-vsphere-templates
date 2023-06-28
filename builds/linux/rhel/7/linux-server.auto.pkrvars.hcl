@@ -11,6 +11,17 @@ vm_guest_os_timezone      = "America/Chicago"
 // Virtual Machine Guest Operating System Setting
 vm_guest_os_type          = "rhel7_64Guest"
 
+//Virtual Machine Guest Partition Sizes (in MB)
+vm_guest_part_audit       = 4096
+vm_guest_part_boot        = 512
+vm_guest_part_home        = 8192
+vm_guest_part_log         = 4096
+vm_guest_part_root        = 0
+vm_guest_part_swap        = 1024
+vm_guest_part_tmp         = 4096
+vm_guest_part_var         = 8192
+vm_guest_part_vartmp      = 1024
+
 // Virtual Machine Hardware Settings
 vm_cdrom_type             = "sata"
 vm_cpu_cores              = 1
@@ -47,10 +58,18 @@ communicator_port         = 22
 communicator_timeout      = "25m"
 
 // Provisioner Settings
+kickstart_rpm_packages = [
+  "cloud-utils-growpart",
+  "net-tools",
+  "perl",
+  "vim",
+  "wget",
+  "yum-utils"
+]
+
 post_install_scripts = [
-  "scripts/linux/configure-sshd.sh",
   "scripts/linux/install-ca-certs.sh",
-   "scripts/linux/update-packages.sh"
+  "scripts/linux/update-packages.sh"
 ]
 
 pre_final_scripts = [
@@ -59,6 +78,7 @@ pre_final_scripts = [
   "scripts/linux/cleanup-cloud-init.sh",
   "scripts/linux/enable-vmware-customization.sh",
   "scripts/linux/cleanup-packages.sh",
+  "builds/linux/rhel/7/hardening.sh",
   "scripts/linux/zero-disk.sh",
   "scripts/linux/generalize.sh"
 ]

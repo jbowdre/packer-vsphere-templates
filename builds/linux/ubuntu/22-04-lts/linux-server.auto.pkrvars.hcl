@@ -11,6 +11,18 @@ vm_guest_os_timezone      = "America/Chicago"
 // Virtual Machine Guest Operating System Setting
 vm_guest_os_type          = "ubuntu64Guest"
 
+//Virtual Machine Guest Partition Sizes (in MB)
+vm_guest_part_audit       = 4096
+vm_guest_part_boot        = 512
+vm_guest_part_efi         = 512
+vm_guest_part_home        = 8192
+vm_guest_part_log         = 4096
+vm_guest_part_root        = 0
+vm_guest_part_swap        = 1024
+vm_guest_part_tmp         = 4096
+vm_guest_part_var         = 8192
+vm_guest_part_vartmp      = 1024
+
 // Virtual Machine Hardware Settings
 vm_cdrom_type             = "sata"
 vm_cpu_cores              = 1
@@ -27,8 +39,8 @@ vm_network_card           = "vmxnet3"
 
 // Removable Media Settings
 iso_checksum_type         = "sha256"
-iso_checksum_value        = "10F19C5B2B8D6DB711582E0E27F5116296C34FE4B313BA45F9B201A5007056CB"
-iso_file                  = "ubuntu-22.04.1-live-server-amd64.iso"
+iso_checksum_value        = "5e38b55d57d94ff029719342357325ed3bda38fa80054f9330dc789cd2d43931"
+iso_file                  = "ubuntu-22.04.2-live-server-amd64.iso"
 iso_url                   = null
 
 // Boot Settings
@@ -49,6 +61,14 @@ communicator_port         = 22
 communicator_timeout      = "25m"
 
 // Provisioner Settings
+cloud_init_apt_packages = [
+  "cloud-guest-utils",
+  "net-tools",
+  "perl",
+  "vim",
+  "wget"
+]
+
 post_install_scripts = [
   "scripts/linux/wait-for-cloud-init.sh",
   "scripts/linux/cleanup-subiquity.sh",
@@ -64,6 +84,8 @@ pre_final_scripts = [
   "scripts/linux/cleanup-cloud-init.sh",
   "scripts/linux/enable-vmware-customization.sh",
   "scripts/linux/cleanup-packages.sh",
+  "scripts/linux/set-admin-password.sh",
+  "builds/linux/ubuntu/22-04-lts/hardening.sh",
   "scripts/linux/zero-disk.sh",
   "scripts/linux/generalize.sh"
 ]

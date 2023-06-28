@@ -53,6 +53,10 @@ locals {
   vsphere_username              = vault("packer/data/vsphere",          "username")             // Username for authenticating to vSphere
 }
 // Sensitive values:
+local "bootloader_password"{
+  expression                    = vault("packer/data/linux",            "bootloader_password")  // Password to set for the bootloader
+  sensitive                     = true
+}
 local "build_password" {
   expression                    = vault("packer/data/linux",            "password")             // Password to set for the default admin account
   sensitive                     = true
@@ -78,13 +82,22 @@ locals {
     "/user-data"                = templatefile("${abspath(path.root)}/data/user-data.pkrtpl.hcl", {
       apt_mirror                = var.cloud_init_apt_mirror
       apt_packages              = var.cloud_init_apt_packages
-      build_password            = bcrypt(local.build_password)
       build_username            = local.build_username
       ssh_keys                  = concat([local.ssh_public_key], [local.build_public_key])
       vm_guest_os_hostname      = var.vm_name
       vm_guest_os_keyboard      = var.vm_guest_os_keyboard
       vm_guest_os_language      = var.vm_guest_os_language
       vm_guest_os_timezone      = var.vm_guest_os_timezone
+      vm_guest_part_audit       = var.vm_guest_part_audit
+      vm_guest_part_boot        = var.vm_guest_part_boot
+      vm_guest_part_efi         = var.vm_guest_part_efi
+      vm_guest_part_home        = var.vm_guest_part_home
+      vm_guest_part_log         = var.vm_guest_part_log
+      vm_guest_part_root        = var.vm_guest_part_root
+      vm_guest_part_swap        = var.vm_guest_part_swap
+      vm_guest_part_tmp         = var.vm_guest_part_tmp
+      vm_guest_part_var         = var.vm_guest_part_var
+      vm_guest_part_vartmp      = var.vm_guest_part_vartmp
     })
   }
 }
@@ -210,7 +223,12 @@ build {
   }
 
   provisioner "shell" {
-    execute_command             = "bash {{ .Path }}"
+    env                         = {
+      "ADMIN_USERNAME"          = local.build_username
+      "ADMIN_PASSWORD"          = local.build_password
+      "BOOTLOADER_PASSWORD"     = local.bootloader_password
+    }
+    execute_command             = "{{ .Vars }} bash {{ .Path }}"
     expect_disconnect           = true
     pause_before                = "30s"
     scripts                     = formatlist("${path.cwd}/%s", var.pre_final_scripts)
