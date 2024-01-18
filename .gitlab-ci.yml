@@ -163,18 +163,3 @@ build_photon4:
       packer build -on-error=abort -force \
       -var-file="builds/common_configs/common.pkrvars.hcl" \
       "builds/linux/photon/4/"
-
-build_clr:
-  stage: build
-  retry:
-    max: 1
-  rules:
-    - if: $BUILD == "clr"
-    - if: $BUILD == "all"
-  script:
-    - echo "Content Library Rsync appliance build underway..."
-    - packer init builds/linux/photon/clr/
-    - |
-      packer build -on-error=abort -force \
-      -var-file="builds/common_configs/common.pkrvars.hcl" \
-      "builds/linux/photon/clr/"

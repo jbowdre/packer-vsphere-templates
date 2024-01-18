@@ -30,9 +30,6 @@ case $build_name in
   cent7)
     build_path="builds/linux/cent/7/"
     ;;
-  clr)
-    build_path="builds/linux/photon/clr/"
-    ;;
   photon4)
     build_path="builds/linux/photon/4/"
     ;;

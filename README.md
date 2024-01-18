@@ -7,7 +7,6 @@ Build Windows and Linux server templates on vSphere with Packer
 - [Windows Server 2019](builds/windows/server/2019) (`ws2019`)
 - [Windows Server 2022](builds/windows/server/2022) (`ws2022`)
 #### Linux
-- [Content Library Rsync appliance](builds/linux/photon/clr/) (`clr`) (details [here](https://github.com/jbowdre/content-library-rsync))
 - [CentOS 7](builds/linux/cent/7/) (`cent7`)
 - [Red Hat Enterprise Linux 7](builds/linux/rhel/7/) (`rhel7`)
 - [Red Hat Enterprise Linux 8](builds/linux/rhel/8/) (`rhel8`)
