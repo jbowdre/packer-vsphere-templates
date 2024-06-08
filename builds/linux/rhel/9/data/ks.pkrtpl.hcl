@@ -38,11 +38,11 @@ rootpw --lock
 
 ### The selected profile will restrict root login.
 ### Add a user that can login and escalate privileges.
-user --name=${ build_username } --iscrypted --password=${ build_password_encrypted } --groups=wheel
+user --name=${ build_username } --iscrypted --password='${ build_password_encrypted }' --groups=wheel
 
 ### Insert SSH public keys for the build user.
 %{ for ssh_key in ssh_keys ~}
-sshkey --username=${ build_username } "${ ssh_key }"
+sshkey --username=${ build_username } '${ ssh_key }'
 %{ endfor }
 
 ### Configure firewall settings for the system.
@@ -142,9 +142,9 @@ ${rpm_package}
 %post
 /usr/sbin/subscription-manager syspurpose role --set "Red Hat Enterprise Linux Server"
 if [ -z "${rhsm_pool}" ]; then
-  /usr/sbin/subscription-manager register --username ${rhsm_username} --password ${rhsm_password} --auto-attach --force
+  /usr/sbin/subscription-manager register --username ${rhsm_username} --password '${rhsm_password}' --auto-attach --force
 else
-  /usr/sbin/subscription-manager register --username ${rhsm_username} --password ${rhsm_password} --force
+  /usr/sbin/subscription-manager register --username ${rhsm_username} --password '${rhsm_password}' --force
   /usr/sbin/subscription-manager attach --pool ${rhsm_pool}
 fi
 /usr/sbin/subscription-manager repos --enable "codeready-builder-for-rhel-9-x86_64-rpms"

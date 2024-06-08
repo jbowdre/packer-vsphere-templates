@@ -38,11 +38,11 @@ rootpw --lock
 
 ### The selected profile will restrict root login.
 ### Add a user that can login and escalate privileges.
-user --name=${ build_username } --iscrypted --password=${ build_password_encrypted } --groups=wheel
+user --name=${ build_username } --iscrypted --password='${ build_password_encrypted }' --groups=wheel
 
 ### Insert SSH public keys for the build user.
 %{ for ssh_key in ssh_keys ~}
-sshkey --username=${ build_username } "${ ssh_key }"
+sshkey --username=${ build_username } '${ ssh_key }'
 %{ endfor }
 
 ### Configure firewall settings for the system.
