@@ -15,8 +15,7 @@ Syntax: $0 [BUILD]
 
 Where [BUILD] is one of the supported OS builds:
 
-cent7 rhel7 rhel8 rhel9 rocky9
-photon4 clr
+rhel8 rhel9 rocky9
 ubuntu2004 ubuntu2204
 ws2019 ws2022
 """
@@ -27,15 +26,6 @@ build_name="${1,,}"
 build_path=
 
 case $build_name in
-  cent7)
-    build_path="builds/linux/cent/7/"
-    ;;
-  photon4)
-    build_path="builds/linux/photon/4/"
-    ;;
-  rhel7)
-    build_path="builds/linux/rhel/7/"
-    ;;
   rhel8)
     build_path="builds/linux/rhel/8/"
     ;;
