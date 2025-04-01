@@ -1,5 +1,8 @@
 # Packer
 
+> [!WARNING]
+> This project has [moved](https://git.vim.wtf/wq/packer-vsphere-templates).
+
 Build Windows and Linux server templates on vSphere with Packer
 
 ### Currently supported builds:
